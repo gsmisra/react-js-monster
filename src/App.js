@@ -11,10 +11,12 @@ class App extends Component {
 
     this.state={
       userList:[],
-      searchField:''
+      searchField:'Monster RolodEx',
+      title: '',
+      someRandomNumber: 0
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.fnHandleChange.bind(this);
   };
 
   componentDidMount(){
@@ -22,13 +24,16 @@ class App extends Component {
     .then(users=> this.setState({userList: users}));
   };
 
-  handleChange = e => {
+  fnHandleChange = e => {
     this.setState({searchField: e.target.value});
   };
 
+  fnHandleClick=()=> {
+      this.setState({someRandomNumber: this.state.someRandomNumber + 1}, 
+        ()=> console.log( this.state.someRandomNumber ));
+  }
 
   render(){
-
     const { userList, searchField } = this.state;
 
     const filteredUserNames = userList.filter(fUser=>
@@ -36,20 +41,19 @@ class App extends Component {
       );
 
     return (
-      <div className='App'>
-
-        <h1>Monster RolodEx</h1>
+      <div className='App' onClick={this.fnHandleClick}>
+        <h1>{this.state.searchField}</h1>
           <SearchBox 
             placeholder='Search using a name'
-            handleChange={this.handleChange}
+            handleChange={this.fnHandleChange}
           />
 
-        <CardList oUserList={filteredUserNames}/>
+        <CardList oUserList={userList}/>
+        <p><h1>{this.state.someRandomNumber}</h1></p>
+        <button onClick={this.fnHandleClick}><b>Click</b></button>
       </div>
     );
   }
 }
-
-
 
 export default App;
